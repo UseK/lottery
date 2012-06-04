@@ -1,6 +1,6 @@
 #encoding : utf-8
-require "./intent_lottery.rb"
-require "./sortdate"
+require "lib/intent_lottery.rb"
+require "lib/sortdate"
 id_file = "input/id.txt"
 int_file = "output/intent.txt"
 sort_int_file = "input/intent.txt"
