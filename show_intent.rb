@@ -1,6 +1,7 @@
 #encoding : utf-8
-require "lib/intent_lottery.rb"
-require "lib/sortdate"
+RPATH = File.dirname(__FILE__)
+require RPATH + "/lib/intent_lottery"
+require RPATH + "/lib/sortdate"
 id_file = "input/id.txt"
 int_file = "output/intent.txt"
 sort_int_file = "input/intent.txt"
