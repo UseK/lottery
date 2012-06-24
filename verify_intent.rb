@@ -1,7 +1,13 @@
 #encoding:utf-8
+Rdir = File.dirname(__FILE__)
+$LOAD_PATH << Rdir
 require "lib/intent_lottery"
-intent_file = "input/intent_regist.txt"
-out_file = "output/int_out.txt"
+if ARGV[0].nil?
+	puts "Usage: ruby verify_intent.rb input/intent_regist.txt"
+	exit
+end
+intent_file = ARGV[0]
+out_file = Rdir + "/output/int_out.txt"
 intent_lottery = IntentLottery.new
-intent_lottery.check_and_regist(intent_file, out_file)
+intent_lottery.verify_intent(intent_file, out_file)
 

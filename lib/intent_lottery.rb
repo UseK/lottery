@@ -1,29 +1,56 @@
 #encoding:utf-8
-require File.dirname(__FILE__) + "/intent_lottery_unit"
+require "date"
+$LOAD_PATH << File.dirname(__FILE__)
+require "intent_lottery_unit"
 
 class IntentLottery
 	def initialize
 		@il_unit = IntentLotteryUnit.new
 	end
-	def check_only(filename_id, filename_out)
+	def show_intent(filename_id, filename_out)
 		out_file = open(filename_out,"w")
 		open(filename_id).each_line do |line|
 			id, password, name = line.split(/,/)
-			@il_unit.check_unit(id,password,name,'tekitou','tekitou2',out_file)
+			puts
+			puts "#{name}さんの抽選結果を調べています..."
+			check_unit(id,password,name,'tekitou','tekitou2',out_file)
 		end
 		out_file.close
 	end
 
-	def check_and_regist(filename_intent, filename_finish)
+	def verify_intent(filename_intent, filename_finish)
 		finish_file = open(filename_finish,"w")
+		wizard(filename_intent)
 		open(filename_intent).each_line do |line|
 			if(/----/ =~ line) then
 				puts ("next day")
 				next
 			end
-			date,range_time,id,password,name = line.split(/,/)
-			@il_unit.check_unit(id,password,name,date,range_time,finish_file)
+			date, range_time, id, password, name = line.split(/,/)
+			puts
+			print line,  "以上の日程の意思確認を行っています...\n"
+			check_unit(id, password, name, date, range_time, finish_file)
 		end
 		finish_file.close
+	end
+
+	def check_unit(id,password,name,date,range_time,finish_file)
+		@il_unit.check_unit(id,password,name,date,range_time,finish_file)
+	end
+
+	def wizard(filename_id)
+		open(filename_id).each_line do |line|
+		puts line
+		#date, range_time, id, password, name = line.split(/,/)
+		#d = Date.strptime(date, "%Y年%m月%d日")
+		end
+		puts "以上の日程の意思確認を行います、よろしいですか？/[yes no]>"
+		if /^yes$/ =~ STDIN.gets.chomp
+			puts "意思確認を行います"
+		else
+			puts "yesと返答されなかったので終了します"
+			exit
+		end
+
 	end
 end

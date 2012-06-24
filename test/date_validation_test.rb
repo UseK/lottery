@@ -1,5 +1,7 @@
 require "test/unit"
-require "../lib/date_validation"
+
+$LOAD_PATH << File.join(File.dirname(__FILE__), "..", "lib")
+require "date_validation"
 
 class TestDateValidation < Test::Unit::TestCase
 	def test_must_valid_date
