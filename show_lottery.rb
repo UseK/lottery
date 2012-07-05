@@ -35,12 +35,8 @@ class ShowLottery
 		puts agent.page.uri
 	end
 end
-if ARGV[1].nil?
-	puts "Usage: check_lottery file_id file_out"
-	exit
-end
-out_file = File.open(ARGV[1], "w")
-File.open(ARGV[0], "r").read.each_line do |line|
+out_file = File.open("output/lottry.txt", "w")
+File.open("input/id.txt", "r").read.each_line do |line|
 	p line
 	id, pass, name = line.split(/,/)
 	ShowLottery.new.check_unit(id, pass, name, out_file)

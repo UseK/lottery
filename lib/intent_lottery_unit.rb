@@ -22,6 +22,7 @@ class IntentLotteryUnit
 		exit_errorpage
 	end
 
+	private
 	def access
 		@agent.get(INTENT_URL)
 		raise ErrorJumpError if @agent.page.uri.to_s == ERROR_URL
@@ -62,7 +63,6 @@ class IntentLotteryUnit
 		@agent.page.link_with(:href => LOGOUT_URL).click
 	end
 
-	private
 	def exit_errorpage
 		puts @agent.page.at('table/tr/td/center/font').inner_text.strip
 		puts "プログラムを終了します"
