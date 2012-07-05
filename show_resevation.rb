@@ -4,6 +4,7 @@ require "mechanize"
 require "kconv"
 require "date"
 class ShowReservation
+	LOGOUT = "http://www.hyogo-park.or.jp/yoyaku/kaiin/logout.asp"
 	def check_unit(id_arr,out_file)
 		agent = Mechanize.new()
 		agent.get("https://www.hyogo-park.or.jp/yoyaku/cancel/cancel.asp")
@@ -54,6 +55,8 @@ class ShowReservation
 				out_file.print("already\n")
 			end
 		end
+		agent.page.link_with(:href => LOGOUT).click
+		p agent.page.uri
 	end
 
 	def show_all
