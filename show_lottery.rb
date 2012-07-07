@@ -39,7 +39,7 @@ class ShowLottery
 
 	def search(out_file)
 		@agent.page.search('tr/td/table[@width="400"]').each do |lottery|
-			puts lottery.inner_text
+			#puts lottery.inner_text
 			if /([0-9]*)年\s*([0-9]*)月\s*([0-9]*)日/ =~ lottery.inner_text
 				dt = sprintf("%d年%d月%d日", $1, $2, $3)
 				print dt
