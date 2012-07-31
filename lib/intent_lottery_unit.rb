@@ -12,10 +12,18 @@ class IntentLotteryUnit
 		@agent = Mechanize.new
 	end
 
-	def check_unit(id, pass, name, date, range_time, out_file)
+	def show_unit(id, pass, name, date, range_time, out_file)
 		access
 		login(id, pass)
-		write_down_already_verified(id, pass, name, out_file)
+		write_down_won_date(id, pass, name, out_file)
+		logout
+	rescue
+		exit_errorpage
+	end
+
+	def verify_unit(id, pass, name, date, range_time, out_file)
+		access
+		login(id, pass)
 		verify_intent(id, pass, name, date, range_time, out_file)
 		logout
 	rescue
@@ -36,12 +44,19 @@ class IntentLotteryUnit
 		end
 	end
 
-	def write_down_already_verified(id, pass, name, out_file)
+	def write_down_won_date(id, pass, name, out_file)
+		each_won_date do |p, verified|
+			date_time = capture_date_time(p)
+			write_down(date_time, id, pass, name, verified + "\n", out_file)
+		end
+	end
+
+	def each_won_date
 		@agent.page.search('tr/td/table[@width="400"]')[0..50].each do |p|
-			if /予約は承認されました/ =~ p.inner_text
-				date_time = capture_date_time(p)
-				write_down(date_time, id, pass, name, "予約済み\n", out_file)
-			end
+			next if /落選しました/ =~ p.inner_text
+			verified = "予約済み" if /予約は承認されました/ =~ p.inner_text
+			verified = "未" if /予約承認確認/ =~ p.inner_text
+			yield p, verified
 		end
 	end
 
@@ -50,10 +65,10 @@ class IntentLotteryUnit
 		approvals.each do |apr|
 			apr.click
 			date_time = capture_date_time_in_aprove
-			write_down(date_time, id, pass, name, "\n", out_file)
 			if date == date_time[0] && range_time == date_time[1]
 				@agent.page.form_with(:name => 'form1') do |f|
 					f.submit(f.button_with(:name => 'submi2'))
+					puts "予約承認を完了しました"
 				end
 			end
 		end

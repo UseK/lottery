@@ -7,13 +7,14 @@ class IntentLottery
 	def initialize
 		@il_unit = IntentLotteryUnit.new
 	end
+
 	def show_intent(filename_id, filename_out)
 		out_file = open(filename_out,"w")
 		open(filename_id).each_line do |line|
 			id, password, name = line.split(/,/)
 			puts
 			puts "#{name}さんの抽選結果を調べています..."
-			check_unit(id,password,name,'tekitou','tekitou2',out_file)
+			@il_unit.show_unit(id,password,name,'tekitou','tekitou2',out_file)
 		end
 		out_file.close
 	end
@@ -23,19 +24,15 @@ class IntentLottery
 		wizard(filename_intent)
 		open(filename_intent).each_line do |line|
 			if(/----/ =~ line) then
-				puts ("next day")
+				puts "next day"
 				next
 			end
 			date, range_time, id, password, name = line.split(/,/)
 			puts
 			print line,  "以上の日程の意思確認を行っています...\n"
-			check_unit(id, password, name, date, range_time, finish_file)
+			@il_unit.verify_unit(id, password, name, date, range_time, finish_file)
 		end
 		finish_file.close
-	end
-
-	def check_unit(id,password,name,date,range_time,finish_file)
-		@il_unit.check_unit(id,password,name,date,range_time,finish_file)
 	end
 
 	def wizard(filename_id)
