@@ -91,8 +91,8 @@ class IntentLotteryUnit
 
 	def capture_date_time(p)
 		date_time = []
-		date_time << $1 if /([0-9]*年[0-9]*月[0-9]*日)/ =~ p.inner_text
-		date_time << $1 if /([0-9]*時〜[0-9]*時)/ =~ p.inner_text
+		date_time << $1 if /([0-9]+年[0-9]+月[0-9]+日)/ =~ p.inner_text
+		date_time << $1 if /([0-9]+時〜[0-9]+時)/ =~ p.inner_text
 	end
 
 	def write_down(date_time, id, pass, name, eol, out_file)

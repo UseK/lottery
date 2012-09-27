@@ -3,6 +3,8 @@ require "rubygems"
 require "mechanize"
 require "kconv"
 require "date"
+require 'openssl'
+OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
 class Account
 	attr_reader :id, :pass, :name
