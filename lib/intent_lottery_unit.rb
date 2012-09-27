@@ -7,6 +7,7 @@ class IntentLotteryUnit
 	INTENT_URL = 'http://www.hyogo-park.or.jp/yoyaku/intention/auth.asp?ch=0'
 	LOGOUT_URL = "http://www.hyogo-park.or.jp/yoyaku/kaiin/logout.asp"
 	ERROR_URL = "http://www.hyogo-park.or.jp/yoyaku/errors.asp"
+	EXEC_URL = "http://www.hyogo-park.or.jp/yoyaku/intention/regist_lot_exec.asp"
 
 	def initialize
 		@agent = Mechanize.new
@@ -21,12 +22,14 @@ class IntentLotteryUnit
 		exit_errorpage
 	end
 
-	def verify_unit(id, pass, name, date, range_time, out_file)
+	def verify_unit(id, pass, name, date, range_time)
 		access
 		login(id, pass)
-		verify_intent(id, pass, name, date, range_time, out_file)
+		verify_intent(date, range_time)
 		logout
-	rescue
+	rescue => exc
+		puts $!, $@
+		puts "例外が発生したのでエラーページの内容を表示し、終了します"
 		exit_errorpage
 	end
 
@@ -60,15 +63,17 @@ class IntentLotteryUnit
 		end
 	end
 
-	def verify_intent(id, pass, name, date, range_time, out_file)
-		approvals = @agent.page.links_with(:text => '予約承認確認')
-		approvals.each do |apr|
-			apr.click
+	def verify_intent(date, range_time)
+		apr_links = @agent.page.links_with(:text => '予約承認確認')
+		apr_links.each do |apr_link|
+			apr_link.click
 			date_time = capture_date_time_in_aprove
 			if date == date_time[0] && range_time == date_time[1]
 				@agent.page.form_with(:name => 'form1') do |f|
-					f.submit(f.button_with(:name => 'submi2'))
-					puts "予約承認を完了しました"
+					s_button = f.button_with(:name => 'submit2')
+					s_button.value = "&nbsp;予約承認&nbsp;"
+					f.submit(s_button)
+					puts @agent.page.at('table[@width="700"]/tr/td[@align="center"]').inner_text if @agent.page.uri.to_s  == EXEC_URL
 				end
 			end
 		end
@@ -86,6 +91,14 @@ class IntentLotteryUnit
 
 	def capture_date_time_in_aprove
 		p = @agent.page.at('form/table[@width="400"]/tr/td/table[@width="400"]')
+
+	def is_not_exist_apr_link
+		each_won_date do |p, verified|
+			date_time = capture_date_time(p)
+			return true if date_time[0]
+		end
+	end
+
 		capture_date_time(p)
 	end
 

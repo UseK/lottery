@@ -7,7 +7,6 @@ if ARGV[0].nil?
 	exit
 end
 intent_file = ARGV[0]
-out_file = Rdir + "/output/int_out.txt"
 intent_lottery = IntentLottery.new
-intent_lottery.verify_intent(intent_file, out_file)
+intent_lottery.verify_intent(intent_file)
 

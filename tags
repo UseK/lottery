@@ -54,9 +54,9 @@ sortdate	lib/sortdate.rb	/^def sortdate(filename_in,filename_out)$/;"	f
 test_must_valid_date	test/date_validation_test.rb	/^	def test_must_valid_date$/;"	f	class:TestDateValidation
 test_must_valid_date	test/verify_lottery_test.rb	/^	def test_must_valid_date$/;"	f
 validate_date	lib/file_scanner.rb	/^	def validate_date(date)$/;"	f	class:IntentData
-verify_intent	lib/intent_lottery.rb	/^	def verify_intent(filename_intent, filename_finish)$/;"	f	class:IntentLottery
-verify_intent	lib/intent_lottery_unit.rb	/^	def verify_intent(id, pass, name, date, range_time, out_file)$/;"	f
-verify_unit	lib/intent_lottery_unit.rb	/^	def verify_unit(id, pass, name, date, range_time, out_file)$/;"	f	class:IntentLotteryUnit
+verify_intent	lib/intent_lottery.rb	/^	def verify_intent(filename_intent)$/;"	f	class:IntentLottery
+verify_intent	lib/intent_lottery_unit.rb	/^	def verify_intent(id, pass, name, date, range_time)$/;"	f
+verify_unit	lib/intent_lottery_unit.rb	/^	def verify_unit(id, pass, name, date, range_time)$/;"	f	class:IntentLotteryUnit
 wizard	lib/intent_lottery.rb	/^	def wizard(filename_id)$/;"	f	class:IntentLottery
 write_down	lib/intent_lottery_unit.rb	/^	def write_down(date_time, id, pass, name, eol, out_file)$/;"	f
 write_down_won_date	lib/intent_lottery_unit.rb	/^	def write_down_won_date(id, pass, name, out_file)$/;"	f	class:IntentLotteryUnit

@@ -19,8 +19,7 @@ class IntentLottery
 		out_file.close
 	end
 
-	def verify_intent(filename_intent, filename_finish)
-		finish_file = open(filename_finish,"w")
+	def verify_intent(filename_intent)
 		wizard(filename_intent)
 		open(filename_intent).each_line do |line|
 			if(/----/ =~ line) then
@@ -30,9 +29,8 @@ class IntentLottery
 			date, range_time, id, password, name = line.split(/,/)
 			puts
 			print line,  "以上の日程の意思確認を行っています...\n"
-			@il_unit.verify_unit(id, password, name, date, range_time, finish_file)
+			@il_unit.verify_unit(id, password, name, date, range_time)
 		end
-		finish_file.close
 	end
 
 	def wizard(filename_id)
