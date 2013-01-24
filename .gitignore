@@ -1,6 +1,13 @@
 input
 output
 test/data
+
+# ctags
 tags
+
+# bundler
 vender/bundle
+.bundle
+
+# swap files
 *.swp
