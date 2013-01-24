@@ -60,8 +60,9 @@ class ShowLottery
 		@agent.page.link_with(:href => LOGOUT).click
 	end
 end
-out_file = File.open("output/lottry.txt", "w")
-File.open("input/id.txt", "r").read.each_line do |line|
+root_dir = File.dirname(__FILE__) + "/../"
+out_file = File.open(root_dir + "output/lottry.txt", "w")
+File.open(root_dir + "input/id.txt", "r").read.each_line do |line|
 	p line
 	id, pass, name = line.split(/,/)
 	ShowLottery.new.check_unit(Account.new(id, pass, name), out_file)

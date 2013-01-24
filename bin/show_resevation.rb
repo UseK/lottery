@@ -56,14 +56,11 @@ class ShowReservation
 			end
 		end
 		agent.page.link_with(:href => LOGOUT).click
-		p agent.page.uri
 	end
 
-	def show_all
-		id_file = open("input/id.txt","r")
-		t = DateTime.now
-		out_file_name = "output/register" + t.strftime("%Y%B%H%M") + ".txt"
-		out_file = open(out_file_name,"w")
+	def show_all id_path, output_path
+    id_file = File.open(id_path, "r")
+    out_file = open(output_path, "w")
 		while (id_text = id_file.gets)do
 			id_arr = id_text.split(/,/)
 			puts id_arr[2]
@@ -74,4 +71,7 @@ class ShowReservation
 		out_file.close
 	end
 end
-ShowReservation.new.show_all
+root_dir = File.dirname(__FILE__) + "/../"
+id_path = root_dir + "input/id.txt"
+output_path = root_dir + "output/register" + DateTime.now.strftime("%Y%B%H%M") + ".txt"
+ShowReservation.new.show_all id_path, output_path

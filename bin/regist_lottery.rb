@@ -11,7 +11,10 @@ class RegisterUnit
 	def register_unit(id, pass, date, range_time='17')
 		@agent = Mechanize.new
 		@agent.get(LOTTERY_URL)
-		error_page if @agent.page.uri.to_s == ERROR_URL
+		if @agent.page.uri.to_s == ERROR_URL
+      error_page
+      exit
+    end
 		@agent.page.link_with(:href => "timetable.asp?date=" + date).click
 		@agent.page.form_with(:name => 'form1').click_button
 		@agent.page.form_with(:name => 'form1'){|f|

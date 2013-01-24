@@ -3,3 +3,4 @@ output
 test/data
 tags
 vender/bundle
+*.swp
