@@ -10,5 +10,5 @@ Gemfile.lock
 vender/bundle
 .bundle
 
-# swap files
+# for Vim
 *.swp
