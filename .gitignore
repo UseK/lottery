@@ -6,6 +6,7 @@ test/data
 tags
 
 # bundler
+Gemfile.lock
 vender/bundle
 .bundle
 
