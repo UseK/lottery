@@ -3,75 +3,62 @@ require "rubygems"
 require "mechanize"
 require "kconv"
 require "date"
+$LOAD_PATH << File.dirname(__FILE__) + "/../lib"
+require "csv_reader"
 class ShowReservation
-	LOGOUT = "http://www.hyogo-park.or.jp/yoyaku/kaiin/logout.asp"
-	def check_unit(id_arr,out_file)
-		agent = Mechanize.new()
-		agent.get("https://www.hyogo-park.or.jp/yoyaku/cancel/cancel.asp")
-		#puts agent.page.uri
-		agent.page.form_with(:name => 'form1'){|f|
-			f.field_with(:name => 'mem_number').value = id_arr[0]
-			f.field_with(:name => 'mem_password').value = id_arr[1]
-			f.click_button
-		}
-		#puts agent.page.uri
-		agent.page.search('tr/td/table[@width="400"]')[0..50].each do |p|
-			if(/(未入金)/ =~ p.inner_text)then
-				if(/([0-9]*年[0-9]*月[0-9]*日)/ =~ p.inner_text) then
-					print($1,(','))
-					#puts p.inner_text
-					out_file.print($1,(','))
-				end
-				if(/([0-9]*時〜[0-9]*時)/ =~ p.inner_text) then
-					print($1,(','))
-					#puts p.inner_text
-					out_file.print($1,(','),id_arr[2],(','))
-				end
-				puts("yet_charged\n")
-				out_file.print("yet\n")
-				#------------------------------------------------------------
-				#warning!operate cancel register temporarily.
-				#agent.page.form_with(:name => 'form1'){|f|
-				#f.checkbox_with(:name =>'rsv_number').check
-				#f.click_button
-				#puts agent.page.uri
-				#agent.page.form_with(:name => 'form1').click_button
-				#puts agent.page.uri
-				#}
-				#------------------------------------------------------------
-			end
-			if(/(入金済)/ =~ p.inner_text)then
-				if(/([0-9]*年[0-9]*月[0-9]*日)/ =~ p.inner_text) then
-					print($1,(','))
-					#puts p.inner_text
-					out_file.print($1,(','))
-				end
-				if(/([0-9]*時〜[0-9]*時)/ =~ p.inner_text) then
-					print($1,(','))
-					#puts p.inner_text
-					out_file.print($1,(','),id_arr[2],(','))
-				end
-				puts("already_charged\n")
-				out_file.print("already\n")
-			end
-		end
-		agent.page.link_with(:href => LOGOUT).click
-	end
-
 	def show_all id_path, output_path
-    id_file = File.open(id_path, "r")
+    csv_id = CSVReader.read_id(id_path)
     out_file = open(output_path, "w")
-		while (id_text = id_file.gets)do
-			id_arr = id_text.split(/,/)
-			puts id_arr[2]
-			check_unit(id_arr,out_file)
+    csv_id.each do |id_row|
+      puts "#{id_row[:name]}さんの予約情報を取得しています..."
+			check_unit(id_row, out_file)
 		end
-		id_file.close
-		out_file.print("That's all!\n")
 		out_file.close
 	end
+
+  CANCEL = "https://www.hyogo-park.or.jp/yoyaku/cancel/cancel.asp"
+	LOGOUT = "http://www.hyogo-park.or.jp/yoyaku/kaiin/logout.asp"
+	def check_unit(id_row, out_file)
+		@agent = Mechanize.new()
+		@agent.get(CANCEL)
+
+		@agent.page.form_with(:name => 'form1'){|f|
+			f.field_with(:name => 'mem_number').value = id_row[:id]
+			f.field_with(:name => 'mem_password').value = id_row[:pass]
+			f.click_button
+		}
+
+		@agent.page.search('tr/td/table[@width="400"]')[0..50].each do |p|
+			if /(未入金)/ =~ p.inner_text
+        print_resevation_unit(p, id_row, "未入金", out_file)
+			end
+			if /(入金済)/ =~ p.inner_text
+        print_resevation_unit(p, id_row, "入金済", out_file)
+			end
+		end
+
+		@agent.page.link_with(:href => LOGOUT).click
+	end
+
+  private
+  def print_resevation_unit p, id_row, charged, out_file
+    resevation_unit = []
+    if /([0-9]*年[0-9]*月[0-9]*日)/ =~ p.inner_text
+      resevation_unit << $1
+    end
+    if /([0-9]*時〜[0-9]*時)/ =~ p.inner_text
+      resevation_unit << $1
+    end
+    resevation_unit << id_row[:name]
+    resevation_unit << charged
+    str = resevation_unit.join(",")
+    puts str
+    out_file.puts str
+  end
 end
 root_dir = File.dirname(__FILE__) + "/../"
-id_path = root_dir + "input/id.txt"
+id_path = root_dir + "input/id.csv"
 output_path = root_dir + "output/register" + DateTime.now.strftime("%Y%B%H%M") + ".txt"
+puts "#{output_path} へ保存します"
 ShowReservation.new.show_all id_path, output_path
+puts "#{output_path} へ保存しました"
