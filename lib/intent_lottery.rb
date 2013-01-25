@@ -2,6 +2,7 @@
 require "date"
 $LOAD_PATH << File.dirname(__FILE__)
 require "intent_lottery_unit"
+require "csv_reader"
 
 class IntentLottery
 	def initialize
@@ -9,12 +10,12 @@ class IntentLottery
 	end
 
 	def show_intent(filename_id, filename_out)
-		out_file = open(filename_out,"w")
-		open(filename_id).each_line do |line|
-			id, password, name = line.split(/,/)
+		out_file = open(filename_out, "w")
+    csv_id = CSVReader.read_id(filename_id)
+		csv_id.each do |row|
 			puts
-			puts "#{name}さんの抽選結果を調べています..."
-			@il_unit.show_unit(id,password,name,'tekitou','tekitou2',out_file)
+			puts "#{row[:name]}さんの抽選結果を調べています..."
+			@il_unit.show_unit(row[:id], row[:pass], row[:name], out_file)
 		end
 		out_file.close
 	end
@@ -33,6 +34,7 @@ class IntentLottery
 		end
 	end
 
+  private
 	def wizard(filename_id)
 		open(filename_id).each_line do |line|
 		puts line
@@ -46,6 +48,5 @@ class IntentLottery
 			puts "yesと返答されなかったので終了します"
 			exit
 		end
-
 	end
 end

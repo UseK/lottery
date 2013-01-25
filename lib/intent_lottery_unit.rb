@@ -13,7 +13,7 @@ class IntentLotteryUnit
 		@agent = Mechanize.new
 	end
 
-	def show_unit(id, pass, name, date, range_time, out_file)
+	def show_unit(id, pass, name, out_file)
 		access
 		login(id, pass)
 		write_down_won_date(id, pass, name, out_file)
