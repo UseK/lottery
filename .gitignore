@@ -1,7 +1,6 @@
-input
-output
-test/data
-
+input/account.csv
+input/*.txt
+outut/*.txt
 # ctags
 tags
 
