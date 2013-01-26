@@ -16,9 +16,9 @@ class Lottery
     end
   end
 
-  def regist_saturday csv_account_path, date_saturday_path
+  def regist_saturday csv_account_path, date_path
     csv_account = CSVReader.read_account csv_account_path
-    date_arr = File.open(date_saturday_path).read.split("\n")
+    date_arr = File.open(date_path).read.split("\n")
     csv_account.each do |account|
       date = ordinal2date(account[:nth_sat], date_arr)
       puts "#{account[:name]}さんの土曜予約 #{date}, #{account[:opening_time]} を行います..."
