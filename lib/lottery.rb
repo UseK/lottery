@@ -10,6 +10,7 @@ class Lottery
     date_arr = File.open(date_path).read.split("\n")
     csv_account.each do |account|
       date_arr.each do |date|
+        puts "#{account[:name]}さんの平日予約 #{date}, 17 を行います..."
         regist_unit account[:id], account[:pass], date, '17'
       end
     end
@@ -20,6 +21,7 @@ class Lottery
     date_arr = File.open(date_saturday_path).read.split("\n")
     csv_account.each do |account|
       date = ordinal2date(account[:nth_sat], date_arr)
+      puts "#{account[:name]}さんの土曜予約 #{date}, #{account[:opening_time]} を行います..."
       regist_unit account[:id], account[:pass], date, account[:opening_time]
     end
   end
@@ -56,7 +58,7 @@ if $0 == __FILE__
   def lottery.regist_unit id, pass, date, opening_time
     p [id, pass, date, opening_time]
   end
-  lottery.regist_weekdays(input_dir + "account.csv", input_dir + "date.txt")
-  puts
-  lottery.regist_saturday(input_dir + "account.csv", input_dir + "date.txt")
+  lottery.regist_weekdays(input_dir + "account.csv", input_dir + "date_weekdays.txt")
+  print "\n\n\n\n"
+  lottery.regist_saturday(input_dir + "account.csv", input_dir + "date_saturday.txt")
 end
