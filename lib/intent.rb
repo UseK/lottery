@@ -1,7 +1,7 @@
 #encoding:utf-8
 require "date"
 $LOAD_PATH << File.dirname(__FILE__)
-require "intent_lottery_unit"
+require "intent_agent"
 require "csv_reader"
 
 class Intent

@@ -8,7 +8,7 @@ class LotteryAgent
   ERROR_URL = "http://www.hyogo-park.or.jp/yoyaku/errors.asp"
   LOGOUT_URL = "http://www.hyogo-park.or.jp/yoyaku/kaiin/logout.asp"
 
-  def regist_unit(id, pass, date, range_time='17')
+  def regist_unit(id, pass, date, opening_time='17')
     @agent = Mechanize.new
     @agent.get(LOTTERY_URL)
     if @agent.page.uri.to_s == ERROR_URL
@@ -23,7 +23,7 @@ class LotteryAgent
       f.click_button
     }
     @agent.page.form_with(:name => 'form1'){|f|
-      f.field_with(:name => 'opening_time').option_with(:value => range_time).select
+      f.field_with(:name => 'opening_time').option_with(:value => opening_time).select
       f.field_with(:name => 'eqp_count').option_with(:value => '1').select
       f.field_with(:name => 'usage').option_with(:value => '21').select
       f.field_with(:name => 'adults').value = '25'

@@ -1,4 +1,5 @@
 require "date"
+require "rubygems"
 require "holiday_japan"
 module TheMonthAfterNext
   def self.print_weekdays

@@ -11,13 +11,13 @@ module CSVReader
     csv_id.each do |row|
       puts "警告: 会員番号が8桁の整数ではありません => #{row}" unless row[:id].match(/^\d{8}$/)
       puts "警告: パスワードが4桁の整数ではありません => #{row}" unless row[:pass].match(/^\d{4}$/)
-      puts "警告: 土曜の開始時間が1,2桁の整数ではありません => #{row}" unless row[:time_start].match(/^\d{1,2}$/)
+      puts "警告: 土曜の開始時間が1,2桁の整数ではありません => #{row}" unless row[:opening_time].match(/^\d{1,2}$/)
     end
   end
 end
 
 if $0 == __FILE__
   root_directory = File.dirname(__FILE__) + "/../"
-  file_path = root_directory + "input/id_sample.csv"
+  file_path = root_directory + "input/account.csv"
   CSVReader.read_account file_path
 end

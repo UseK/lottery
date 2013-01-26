@@ -5,9 +5,9 @@ require "kconv"
 require "date"
 $LOAD_PATH << File.dirname(__FILE__) + "/../lib"
 require "csv_reader"
-class ShowReservation
-	def show_all id_path, output_path
-    csv_id = CSVReader.read_id(id_path)
+class Resevation
+	def show_all csv_account_path, output_path
+    csv_id = CSVReader.read_id(csv_account_path)
     out_file = open(output_path, "w")
     csv_id.each do |id_row|
       puts "#{id_row[:name]}さんの予約情報を取得しています..."
@@ -57,8 +57,8 @@ class ShowReservation
   end
 end
 root_dir = File.dirname(__FILE__) + "/../"
-id_path = root_dir + "input/id.csv"
+csv_account_path = root_dir + "input/account.csv"
 output_path = root_dir + "output/register" + DateTime.now.strftime("%Y%B%H%M") + ".txt"
 puts "#{output_path} へ保存します"
-ShowReservation.new.show_all id_path, output_path
+Resevation.new.show_all csv_account_path, output_path
 puts "#{output_path} へ保存しました"
