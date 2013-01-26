@@ -3,7 +3,7 @@ require 'rubygems'
 require 'mechanize'
 require 'kconv'
 
-class IntentLotteryUnit
+class IntentAgent
 	INTENT_URL = 'http://www.hyogo-park.or.jp/yoyaku/intention/auth.asp?ch=0'
 	LOGOUT_URL = "http://www.hyogo-park.or.jp/yoyaku/kaiin/logout.asp"
 	ERROR_URL = "http://www.hyogo-park.or.jp/yoyaku/errors.asp"
@@ -13,16 +13,16 @@ class IntentLotteryUnit
 		@agent = Mechanize.new
 	end
 
-	def show_unit(id, pass, name, out_file)
+	def show_unit(id, pass, name, csv_intent)
 		access
 		login(id, pass)
-		write_down_won_date(id, pass, name, out_file)
+		write_down_won_date(id, pass, name, csv_intent)
 		logout
 	rescue
 		exit_errorpage
 	end
 
-	def verify_unit(id, pass, name, date, range_time)
+	def verify_unit(id, pass, date, range_time)
 		access
 		login(id, pass)
 		verify_intent(date, range_time)
@@ -47,10 +47,10 @@ class IntentLotteryUnit
 		end
 	end
 
-	def write_down_won_date(id, pass, name, out_file)
+	def write_down_won_date(id, pass, name, csv_intent)
 		each_won_date do |p, verified|
 			date_time = capture_date_time(p)
-			write_down(date_time, id, pass, name, verified + "\n", out_file)
+			write_down(date_time, id, pass, name, verified + "\n", csv_intent)
 		end
 	end
 
@@ -108,9 +108,9 @@ class IntentLotteryUnit
 		date_time << p.inner_text[/(\d{1,2}時.+\d{1,2}時)/]
 	end
 
-	def write_down(date_time, id, pass, name, eol, out_file)
+	def write_down(date_time, id, pass, name, eol, csv_intent)
 		line = [date_time, id, pass, name, eol].join(',')
 		puts(line)
-		out_file.print(line)
+		csv_intent.print(line)
 	end
 end

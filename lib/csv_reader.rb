@@ -1,7 +1,7 @@
 #encoding:utf-8
 require "csv"
 module CSVReader
-  def self.read_id file_path
+  def self.read_account file_path
     csv_id =  CSV.read(file_path, :headers => true, :header_converters => :symbol)
     print_invalid_id csv_id
   end
@@ -19,5 +19,5 @@ end
 if $0 == __FILE__
   root_directory = File.dirname(__FILE__) + "/../"
   file_path = root_directory + "input/id_sample.csv"
-  CSVReader.read_id file_path
+  CSVReader.read_account file_path
 end
