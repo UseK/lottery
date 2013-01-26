@@ -1,6 +1,7 @@
 input/account.csv
 input/*.txt
-outut/*.txt
+outut/*
+!output/.gitkeep
 # ctags
 tags
 
