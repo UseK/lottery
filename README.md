@@ -3,6 +3,21 @@ lottery
 
 Ruby, Mechanizeを使ったテニスコート抽選予約自動化スクリプト
 
+動作環境
+--------
+推奨環境  
+Mac OS X 10.8.x Mountain Lion  
+Ruby 1.9.x
+
+依存パッケージ  
+Mechanize 2.5.1  
+holiday_japan 1.0.1  
+※gemへ個別にインストールしていただくか，
+bundlerをお使いください．
+
+
+
+
 使い方
 --------
 
@@ -31,7 +46,7 @@ opening_timeは土曜の日程の開始時間
 
 $ ruby bin/regist_lottery.rb
 
-で土曜の日程数に合わせ自動的に更新される．
+が行われると土曜の日程数に合わせ自動的に更新される．
 
 
 
@@ -100,7 +115,9 @@ input/intent.txtを編集した上で
 
 $ ruby bin/verify_intent.rb
 
-で意思確認処理が行われる
+で意思確認処理が行われる  
+(input/intent.txtの内容が表示され，本当に意思確認を行うかの確認が表示されるので
+"yes"と入力する)  
 再び
 
 $ ruby bin/show_intent.rb
@@ -112,5 +129,5 @@ $ ruby bin/show_resevation.rb
 で予約を行ったものに対する一覧を取得して  
 outpout/resevation.txtに保管されるが，
 意思確認を行ったものに対しては「未入金」として取得される．
-テニスコートで入金を行うと「入金済」となりその日程の
-コートを使用する事が出来る．
+テニスコート施設で入金を行うと「入金済」となりその日程の
+コートを使用する事が出来るようになる．
