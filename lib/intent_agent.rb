@@ -13,10 +13,10 @@ class IntentAgent
 		@agent = Mechanize.new
 	end
 
-	def show_unit(id, pass, name, csv_intent)
+	def show_unit(id, pass, name, file_intent)
 		access
 		login(id, pass)
-		write_down_won_date(id, pass, name, csv_intent)
+		write_down_won_date(id, pass, name, file_intent)
 		logout
 	rescue
 		exit_errorpage
@@ -47,11 +47,11 @@ class IntentAgent
 		end
 	end
 
-	def write_down_won_date(id, pass, name, csv_intent)
+	def write_down_won_date(id, pass, name, file_intent)
 		each_won_date do |date_time, verified|
       line = [date_time, id, pass, name, verified].join(",")
       puts line
-      csv_intent.puts line
+      file_intent.puts line
 		end
 	end
 
