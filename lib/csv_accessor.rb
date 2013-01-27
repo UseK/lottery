@@ -14,7 +14,7 @@ module CSVAccessor
       tmp_arr << updated_account.join(",")
     end
     tmp_arr
-    new_csv = File.open(file_path, "w")
+    new_csv = File.open(file_path, "w", :encoding => 'utf-8')
     new_csv.puts("id,pass,name,nth_sat,opening_time")
     tmp_arr.each do |line|
       new_csv.puts line
@@ -39,7 +39,7 @@ module CSVAccessor
   end
 
   def self.read_account file_path
-    csv_account =  CSV.read(file_path, :headers => true, :header_converters => :symbol)
+    csv_account =  CSV.read(file_path, :headers => true, :header_converters => :symbol, :encoding => 'utf-8')
     print_invalid_id csv_account
   end
 

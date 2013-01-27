@@ -5,7 +5,7 @@ require "holiday_japan"
 module TheMonthAfterNext
 
   def self.generate_weekdays date_weekdays_path
-    date_weekdays_file = File.open(date_weekdays_path, "w")
+    date_weekdays_file = File.open(date_weekdays_path, "w", :encoding => 'utf-8')
     each_date_in_month do |d|
       if d.monday? || d.wednesday?
         date_str = d.strftime("%Y/%m/%d")
@@ -20,7 +20,7 @@ module TheMonthAfterNext
   end
 
   def self.generate_saturday date_saturday_path
-    date_saturday_file = File.open(date_saturday_path, "w")
+    date_saturday_file = File.open(date_saturday_path, "w", :encoding => 'utf-8')
     each_date_in_month do |d|
       if d.saturday?
         date_str = d.strftime("%Y/%m/%d")

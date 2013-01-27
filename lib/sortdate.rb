@@ -1,7 +1,7 @@
 #encoding:utf-8
 def sortdate(filename_in,filename_out)
-	file_out = open(filename_out,"w")
-	int_line = open(filename_in,"r").read.split(/\n/)
+  file_out = open(filename_out,"w", :encoding => 'utf-8')
+	int_line = open(filename_in,"r", :encoding => 'utf-8').read.split(/\n/)
 	int_line.each do |p|
     if /月(\d)日/ =~ p
       p.sub!(/月(\d)日/,'月0' + $1 +'日')

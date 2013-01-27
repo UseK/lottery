@@ -7,7 +7,7 @@ require "csv_accessor"
 class Resevation
   def show_all csv_account_path, output_path
     csv_account = CSVAccessor.read_account(csv_account_path)
-    out_file = open(output_path, "w")
+    out_file = open(output_path, "w", :encoding => 'utf-8')
     csv_account.each do |account|
       puts "#{account[:name]}さんの予約情報を取得しています..."
       check_unit(account, out_file)

@@ -7,7 +7,7 @@ class Lottery
 
   def regist_weekdays csv_account_path, date_path
     csv_account = CSVAccessor.read_account csv_account_path
-    date_arr = File.open(date_path).read.split("\n")
+    date_arr = File.open(date_path, :encoding => 'utf-8').read.split("\n")
     csv_account.each do |account|
       date_arr.each do |date|
         puts "#{account[:name]}さんの平日予約 #{date}, 17 を行います..."
@@ -18,7 +18,7 @@ class Lottery
 
   def regist_saturday csv_account_path, date_path
     csv_account = CSVAccessor.read_account csv_account_path
-    date_arr = File.open(date_path).read.split("\n")
+    date_arr = File.open(date_path, :encoding => 'utf-8').read.split("\n")
     csv_account.each do |account|
       date = ordinal2date(account[:nth_sat], date_arr)
       puts "#{account[:name]}さんの土曜予約 #{date}, #{account[:opening_time]} を行います..."
