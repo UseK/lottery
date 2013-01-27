@@ -44,7 +44,7 @@ $ ruby bin/generate_lottery_date.rb
 
 で
 input/date_weekdays.txtに再来月の平日の月曜，水曜の一覧が
-inpub/date_saturday.txtに再来月の平日の土曜の一覧が
+input/date_saturday.txtに再来月の平日の土曜の一覧が
 保管される．  
 
 出力例  
@@ -57,7 +57,7 @@ input/date_weekdays.txt
 2013/03/25  
 2013/03/27  
 
-inpub/date_saturday.txt  
+input/date_saturday.txt  
 2013/03/02  
 2013/03/09  
 2013/03/16  
@@ -65,7 +65,7 @@ inpub/date_saturday.txt
 2013/03/30  
 
 これらのファイルを編集し，抽選予約を行う日程のみ残し，行わない日程は削除する．  
-ファイルを編集した上で
+input/date_weekdays.txt, input/date_saturday.txtを編集した上で
 
 $ ruby bin/regist_lottery.rb
 
@@ -73,7 +73,7 @@ $ ruby bin/regist_lottery.rb
 （会員情報，平日の日程，土曜の日程を表示した上で本当にこの日程で抽選予約が行われるかの
 確認がくるので"yes"を入力する）  
 input/date_weekdays.txtの全日程(１７時から１９時までで固定)を  
-input/date_saturday.txtのいずれか１つの日程(opening_timeの時間帯)を  
+input/date_saturday.txtのいずれか１つの日程(input/account.txtのopening_timeの時間帯)を  
 アカウントごとに抽選予約の処理が行われる．  
 会員数が多いと処理に時間がかかる，大体90人分で30分くらい．  
 
@@ -96,7 +96,7 @@ $ ruby bin/show_intent.rb
 でoutput/intent.txtに抽選結果が  
 input/intent.txtにそれを日付でソートしたものが生成される  
 input/intent.txtを編集して意思確認したい日程の行だけを残し，意思確認したくないものはその行を消す．  
-ファイルを編集した上で
+input/intent.txtを編集した上で
 
 $ ruby bin/verify_intent.rb
 
