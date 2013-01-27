@@ -1,6 +1,8 @@
-input/account.csv
+input/*.csv
+input/*.bak
 input/*.txt
-outut/*
+!input/account_sample.csv
+output/*.txt
 !output/.gitkeep
 # ctags
 tags
