@@ -9,10 +9,15 @@ module CSVAccessor
     raise "月に第#{n_sat}週は存在しません" if n_sat >= 6
     file_path_back = file_path + ".bak"
     FileUtils.cp(file_path, file_path_back)
-    new_csv = CSV.open(file_path, "w")
-    new_csv << ["id", "pass", "name", "nth_sat", "opening_time"]
+    tmp_arr = []
     each_updated_account(file_path_back, n_sat) do |updated_account|
-      new_csv << updated_account
+      tmp_arr << updated_account.join(",")
+    end
+    tmp_arr
+    new_csv = File.open(file_path, "w")
+    new_csv.puts("id,pass,name,nth_sat,opening_time")
+    tmp_arr.each do |line|
+      new_csv.puts line
     end
     new_csv.close
   end
@@ -52,5 +57,9 @@ if $0 == __FILE__
   root_directory = File.dirname(__FILE__) + "/../"
   file_path = root_directory + "input/account.csv"
   CSVAccessor.read_account file_path
-  CSVAccessor.update_account_sat_nth file_path, 5
+  CSVAccessor.update_account_sat_nth file_path, 2
+  csv_account = CSVAccessor.read_account file_path
+  csv_account.each do |row|
+    puts row
+  end
 end
