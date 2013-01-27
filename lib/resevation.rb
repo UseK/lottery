@@ -3,10 +3,10 @@ require "rubygems"
 require "mechanize"
 require "kconv"
 $LOAD_PATH << File.dirname(__FILE__)
-require "csv_reader"
+require "csv_accessor"
 class Resevation
   def show_all csv_account_path, output_path
-    csv_account = CSVReader.read_account(csv_account_path)
+    csv_account = CSVAccessor.read_account(csv_account_path)
     out_file = open(output_path, "w")
     csv_account.each do |account|
       puts "#{account[:name]}さんの予約情報を取得しています..."

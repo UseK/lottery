@@ -1,12 +1,12 @@
 #encoding: utf-8
 $LOAD_PATH << File.dirname(__FILE__)
 require "lottery_agent"
-require "csv_reader"
+require "csv_accessor"
 
 class Lottery
 
   def regist_weekdays csv_account_path, date_path
-    csv_account = CSVReader.read_account csv_account_path
+    csv_account = CSVAccessor.read_account csv_account_path
     date_arr = File.open(date_path).read.split("\n")
     csv_account.each do |account|
       date_arr.each do |date|
@@ -17,7 +17,7 @@ class Lottery
   end
 
   def regist_saturday csv_account_path, date_path
-    csv_account = CSVReader.read_account csv_account_path
+    csv_account = CSVAccessor.read_account csv_account_path
     date_arr = File.open(date_path).read.split("\n")
     csv_account.each do |account|
       date = ordinal2date(account[:nth_sat], date_arr)

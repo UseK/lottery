@@ -2,7 +2,7 @@
 require "date"
 $LOAD_PATH << File.dirname(__FILE__)
 require "intent_agent"
-require "csv_reader"
+require "csv_accessor"
 
 class Intent
 	def initialize
@@ -11,7 +11,7 @@ class Intent
 
 	def show_intent(csv_account_path, csv_intent_path)
 		csv_intent = open(csv_intent_path, "w")
-    csv_account = CSVReader.read_account(csv_account_path)
+    csv_account = CSVAccessor.read_account(csv_account_path)
 		csv_account.each do |account|
 			puts
 			puts "#{account[:name]}さんの抽選結果を調べています..."
