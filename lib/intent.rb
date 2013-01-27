@@ -23,7 +23,7 @@ class Intent
 	def verify_intent(csv_intent_path)
 		wizard(csv_intent_path)
 		open(csv_intent_path).each_line do |line|
-			if(/----/ =~ line) then
+			if(/^-+/ =~ line) then
 				puts "next day"
 				next
 			end

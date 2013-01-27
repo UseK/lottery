@@ -25,7 +25,7 @@ class IntentAgent
 	def verify_unit(id, pass, date, range_time)
 		access
 		login(id, pass)
-		verify_intent(date, range_time)
+		exec_verification(date, range_time)
 		logout
 	rescue => exc
 		puts $!, $@
@@ -48,26 +48,27 @@ class IntentAgent
 	end
 
 	def write_down_won_date(id, pass, name, csv_intent)
-		each_won_date do |p, verified|
-			date_time = capture_date_time(p)
-			write_down(date_time, id, pass, name, verified + "\n", csv_intent)
+		each_won_date do |date_time, verified|
+      line = [date_time, id, pass, name, verified].join(",")
+      puts line
+      csv_intent.puts line
 		end
 	end
 
 	def each_won_date
 		@agent.page.search('tr/td/table[@width="400"]')[0..50].each do |p|
 			next if /落選しました/ =~ p.inner_text
-			verified = "予約済み" if /予約は承認されました/ =~ p.inner_text
+			verified = "予約承認済み" if /予約は承認されました/ =~ p.inner_text
 			verified = "未" if /予約承認確認/ =~ p.inner_text
-			yield p, verified
+			yield capture_date_time(p), verified
 		end
 	end
 
-	def verify_intent(date, range_time)
+	def exec_verification(date, range_time)
 		apr_links = @agent.page.links_with(:text => '予約承認確認')
 		apr_links.each do |apr_link|
 			apr_link.click
-			date_time = capture_date_time_in_aprove
+			date_time = capture_date_time(@agent.page.at('form/table[@width="400"]/tr/td/table[@width="400"]'))
 			if date == date_time[0] && range_time == date_time[1]
 				@agent.page.form_with(:name => 'form1') do |f|
 					s_button = f.button_with(:name => 'submit2')
@@ -89,28 +90,9 @@ class IntentAgent
 		exit
 	end
 
-	def capture_date_time_in_aprove
-		p = @agent.page.at('form/table[@width="400"]/tr/td/table[@width="400"]')
-
-	def is_not_exist_apr_link
-		each_won_date do |p, verified|
-			date_time = capture_date_time(p)
-			return true if date_time[0]
-		end
-	end
-
-		capture_date_time(p)
-	end
-
 	def capture_date_time(p)
 		date_time = []
 		date_time << p.inner_text[/\d{4,}年\d{1,2}月\d{1,2}日/]
 		date_time << p.inner_text[/(\d{1,2}時.+\d{1,2}時)/]
-	end
-
-	def write_down(date_time, id, pass, name, eol, csv_intent)
-		line = [date_time, id, pass, name, eol].join(',')
-		puts(line)
-		csv_intent.print(line)
 	end
 end

@@ -1,11 +1,8 @@
 #encoding:utf-8
-$LOAD_PATH << File.dirname(__FILE__) + "/../lib"
-require "intent_lottery"
-if ARGV[0].nil?
-	puts "Usage: ruby verify_intent.rb input/intent_verify.txt"
-	exit
-end
-intent_file = ARGV[0]
-intent_lottery = IntentLottery.new
+root_dir = File.dirname(__FILE__) + "/../"
+$LOAD_PATH << root_dir + "lib"
+require "intent"
+intent_file = root_dir + "input/intent.txt"
+intent_lottery = Intent.new
 intent_lottery.verify_intent(intent_file)
 
