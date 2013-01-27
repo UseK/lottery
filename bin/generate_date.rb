@@ -3,6 +3,7 @@ require "date"
 require "rubygems"
 require "holiday_japan"
 module TheMonthAfterNext
+
   def self.generate_weekdays date_weekdays_path
     date_weekdays_file = File.open(date_weekdays_path, "w")
     each_date_in_month do |d|
@@ -38,6 +39,7 @@ module TheMonthAfterNext
     end
   end
 end
+
 input_dir = File.dirname(__FILE__) + "/../input/"
 date_weekdays_path = input_dir + "date_weekdays.txt"
 date_saturday_path = input_dir + "date_saturday.txt"
@@ -46,4 +48,4 @@ puts "#{date_weekdays_path}へ書き出しました"
 puts
 TheMonthAfterNext.generate_saturday date_saturday_path
 puts "#{date_saturday_path}へ書き出しました"
-puts "編集を行い，regist_lottery.rb を走らせてください"
+puts "抽選予約を行わない日程を削除し，regist_lottery.rb を実行ください"
