@@ -4,8 +4,8 @@ require 'mechanize'
 require 'kconv'
 
 class IntentAgent
-	INTENT_URL = 'http://www.hyogo-park.or.jp/yoyaku/intention/auth.asp?ch=0'
-	LOGOUT_URL = "http://www.hyogo-park.or.jp/yoyaku/kaiin/logout.asp"
+	INTENT_URL = 'https://www.hyogo-park.or.jp/yoyaku/intention/auth.asp?ch=0'
+	LOGOUT_URL = "https://www.hyogo-park.or.jp/yoyaku/kaiin/logout.asp"
 	ERROR_URL = "http://www.hyogo-park.or.jp/yoyaku/errors.asp"
 	EXEC_URL = "http://www.hyogo-park.or.jp/yoyaku/intention/regist_lot_exec.asp"
 
@@ -18,7 +18,8 @@ class IntentAgent
 		login(id, pass)
 		write_down_won_date(id, pass, name, file_intent)
 		logout
-	rescue
+	rescue => exc
+    puts $!, $@
 		exit_errorpage
 	end
 
