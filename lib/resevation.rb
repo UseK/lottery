@@ -1,5 +1,7 @@
 #encoding: utf-8
 require "rubygems"
+require "openssl"
+OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 require "mechanize"
 require "kconv"
 $LOAD_PATH << File.dirname(__FILE__)
@@ -16,7 +18,7 @@ class Resevation
   end
 
   CANCEL_URL = "https://www.hyogo-park.or.jp/yoyaku/cancel/cancel.asp"
-  LOGOUT_URL = "http://www.hyogo-park.or.jp/yoyaku/kaiin/logout.asp"
+  LOGOUT_URL = "https://www.hyogo-park.or.jp/yoyaku/kaiin/logout.asp"
   def check_unit(account, out_file)
     @agent = Mechanize.new()
     @agent.get(CANCEL_URL)
