@@ -6,7 +6,8 @@ require "mechanize"
 require "kconv"
 $LOAD_PATH << File.dirname(__FILE__)
 require "csv_accessor"
-class Resevation
+require "agent"
+class Resevation < Agent
   def show_all csv_account_path, output_path
     csv_account = CSVAccessor.read_account(csv_account_path)
     out_file = open(output_path, "w", :encoding => 'utf-8')
@@ -18,22 +19,15 @@ class Resevation
   end
 
   CANCEL_URL = "https://www.hyogo-park.or.jp/yoyaku/cancel/cancel.asp"
-  LOGOUT_URL = "https://www.hyogo-park.or.jp/yoyaku/kaiin/logout.asp"
   def check_unit(account, out_file)
-    @agent = Mechanize.new()
     @agent.get(CANCEL_URL)
-
-    @agent.page.form_with(:name => 'form1'){|f|
-      f.field_with(:name => 'mem_number').value = account[:id]
-      f.field_with(:name => 'mem_password').value = account[:pass]
-      f.click_button
-    }
+    login(account[:id], account[:pass])
 
     @agent.page.search('tr/td/table[@width="400"]')[0..50].each do |p|
       print_resevation_unit(p.inner_text, account, out_file)
     end
 
-    @agent.page.link_with(:href => LOGOUT_URL).click
+    logout
   end
 
   private

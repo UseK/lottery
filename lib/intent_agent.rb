@@ -1,17 +1,11 @@
 #encoding:utf-8
-require 'rubygems'
-require 'mechanize'
-require 'kconv'
+$LOAD_PATH << File.dirname(__FILE__)
+require "agent"
 
-class IntentAgent
+class IntentAgent < Agent
 	INTENT_URL = 'https://www.hyogo-park.or.jp/yoyaku/intention/auth.asp?ch=0'
-	LOGOUT_URL = "https://www.hyogo-park.or.jp/yoyaku/kaiin/logout.asp"
-	ERROR_URL = "http://www.hyogo-park.or.jp/yoyaku/errors.asp"
 	EXEC_URL = "http://www.hyogo-park.or.jp/yoyaku/intention/regist_lot_exec.asp"
 
-	def initialize
-		@agent = Mechanize.new
-	end
 
 	def show_unit(id, pass, name, file_intent)
 		access
@@ -38,14 +32,6 @@ class IntentAgent
 	def access
 		@agent.get(INTENT_URL)
 		raise ErrorJumpError if @agent.page.uri.to_s == ERROR_URL
-	end
-
-	def login(id, pass)
-		@agent.page.form_with(:name => 'form1') do |f|
-			f.field_with(:name => 'mem_number').value = id
-			f.field_with(:name => 'mem_password').value = pass
-			f.click_button(f.button_with(:value => '&nbsp;次&nbsp;&nbsp;へ&nbsp;'))
-		end
 	end
 
 	def write_down_won_date(id, pass, name, file_intent)
@@ -79,16 +65,6 @@ class IntentAgent
 				end
 			end
 		end
-	end
-
-	def logout
-		@agent.page.link_with(:href => LOGOUT_URL).click
-	end
-
-	def exit_errorpage
-		puts @agent.page.at('table/tr/td/center/font').inner_text.strip
-		puts "プログラムを終了します"
-		exit
 	end
 
 	def capture_date_time(p)
