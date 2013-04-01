@@ -3,25 +3,33 @@ require 'rubygems'
 require 'mechanize'
 require 'kconv'
 
-class LotteryAgent
+$LOAD_PATH << File.dirname(__FILE__)
+require "agent"
+
+class LotteryAgent < Agent
   LOTTERY_URL ="http://www.hyogo-park.or.jp/yoyaku/lottery/calendar.asp?ins_id=8&ins_type=4"
-  ERROR_URL = "http://www.hyogo-park.or.jp/yoyaku/errors.asp"
-  LOGOUT_URL = "http://www.hyogo-park.or.jp/yoyaku/kaiin/logout.asp"
 
   def regist_unit(id, pass, date, opening_time='17')
-    @agent = Mechanize.new
     @agent.get(LOTTERY_URL)
-    if @agent.page.uri.to_s == ERROR_URL
-      error_page
-      exit
-    end
+    exit_errorpage if @agent.page.uri.to_s == ERROR_URL
+    calender(date)
+    timetable
+    login(id, pass)
+    timetable_input(opening_time)
+    confirm
+    error_page if @agent.page.uri.to_s == ERROR_URL
+    logout
+  end
+
+  def calender date
     @agent.page.link_with(:href => "timetable.asp?date=" + date).click
+  end
+
+  def timetable
     @agent.page.form_with(:name => 'form1').click_button
-    @agent.page.form_with(:name => 'form1'){|f|
-      f.field_with(:name => 'mem_number').value = id
-      f.field_with(:name => 'mem_password').value = pass
-      f.click_button
-    }
+  end
+
+  def timetable_input opening_time
     @agent.page.form_with(:name => 'form1'){|f|
       f.field_with(:name => 'opening_time').option_with(:value => opening_time).select
       f.field_with(:name => 'eqp_count').option_with(:value => '1').select
@@ -29,9 +37,10 @@ class LotteryAgent
       f.field_with(:name => 'adults').value = '25'
       f.click_button
     }
+  end
+
+  def confirm
     @agent.page.form_with(:name => 'form1').click_button
-    error_page if @agent.page.uri.to_s == ERROR_URL
-    @agent.page.link_with(:href => LOGOUT_URL).click
   end
 
   def error_page
