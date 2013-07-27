@@ -9,7 +9,7 @@ require "agent"
 class LotteryAgent < Agent
   LOTTERY_URL ="http://www.hyogo-park.or.jp/yoyaku/lottery/calendar.asp?ins_id=8&ins_type=4"
 
-  def regist_unit(id, pass, date, opening_time='17')
+  def register_unit(id, pass, date, opening_time='17')
     @agent.get(LOTTERY_URL)
     exit_errorpage if @agent.page.uri.to_s == ERROR_URL
     calender(date)

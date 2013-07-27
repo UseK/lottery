@@ -27,5 +27,5 @@ else
   exit
 end
 
-Lottery.new.regist_weekdays(csv_account_path, date_weekdays_path)
-Lottery.new.regist_saturday(csv_account_path, date_saturday_path)
+Lottery.new.register_weekdays(csv_account_path, date_weekdays_path)
+Lottery.new.register_saturday(csv_account_path, date_saturday_path)

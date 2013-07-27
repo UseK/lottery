@@ -44,7 +44,7 @@ opening_timeは土曜の日程の開始時間
 (15なら１５時から１７時，17なら１７時から１９時)  
 ただし，nth_sat, opening_timeは後述する抽選予約の処理  
 
-$ ruby bin/regist_lottery.rb
+$ ruby bin/register_lottery.rb
 
 が行われると土曜の日程数に合わせ自動的に更新される．
 
@@ -82,7 +82,7 @@ input/date_saturday.txt
 これらのファイルを編集し，抽選予約を行う日程のみ残し，行わない日程は削除する．  
 input/date_weekdays.txt, input/date_saturday.txtを編集した上で
 
-$ ruby bin/regist_lottery.rb
+$ ruby bin/register_lottery.rb
 
 で抽選予約が開始される．  
 （会員情報，平日の日程，土曜の日程を表示した上で本当にこの日程で抽選予約が行われるかの

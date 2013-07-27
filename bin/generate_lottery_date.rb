@@ -48,4 +48,4 @@ puts "#{date_weekdays_path}へ書き出しました"
 puts
 TheMonthAfterNext.generate_saturday date_saturday_path
 puts "#{date_saturday_path}へ書き出しました"
-puts "抽選予約を行わない日程を削除し，regist_lottery.rb を実行ください"
+puts "抽選予約を行わない日程を削除し，register_lottery.rb を実行ください"
