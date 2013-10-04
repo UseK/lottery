@@ -23,6 +23,10 @@ class LotteryAgent < Agent
 
   def calender date
     @agent.page.link_with(:href => "timetable.asp?date=" + date).click
+  rescue
+    puts "Error:#{date}は予約出来る日程ではありません"
+    puts "プログラムを終了します"
+    exit
   end
 
   def timetable

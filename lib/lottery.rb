@@ -34,6 +34,7 @@ class Lottery
       }
     rescue => ex
       puts ex.message
+      puts ex.backtrace
       retry
     end
   end
