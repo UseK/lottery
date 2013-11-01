@@ -6,9 +6,11 @@ require 'kconv'
 class Agent
 	LOGOUT_URL = "https://www.hyogo-park.or.jp/yoyaku/kaiin/logout.asp"
 	ERROR_URL = "http://www.hyogo-park.or.jp/yoyaku/errors.asp"
+  CRT_Path = "#{File.dirname(__FILE__)}/../input/ca-bundle.crt"
 
 	def initialize
 		@agent = Mechanize.new
+    @agent.ca_file = CRT_Path
 	end
 
 	def login(id, pass)

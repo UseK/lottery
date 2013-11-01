@@ -1,7 +1,6 @@
 #encoding: utf-8
 require "rubygems"
 require "openssl"
-OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 require "mechanize"
 require "kconv"
 $LOAD_PATH << File.dirname(__FILE__)
