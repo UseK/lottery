@@ -1,3 +1,3 @@
 source "http://rubygems.org"
-gem "mechanize", "~> 2.5.1"
+gem "mechanize"
 gem "holiday_japan", "~> 1.0.1"
