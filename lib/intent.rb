@@ -10,7 +10,7 @@ class Intent
 	end
 
 	def show_intent(csv_account_path, intent_path)
-		file_intent = open(intent_path, "w", :encoding => 'utf-8')
+		file_intent = File.open(intent_path, "w", :encoding => 'utf-8')
     csv_account = CSVAccessor.read_account(csv_account_path)
 		csv_account.each do |account|
 			puts
@@ -26,6 +26,11 @@ class Intent
 				puts "next day"
 				next
 			end
+      unless (/.+,.+,.+,.+/ =~ line) then
+        puts line
+        puts "is invalid line, so skip"
+        next
+      end
 			date, range_time, id, pass, name = line.split(/,/)
 			puts
 			print line,  "以上の日程の意思確認を行っています...\n"
